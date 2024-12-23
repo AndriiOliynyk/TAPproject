@@ -2,8 +2,10 @@ from fastapi import FastAPI, HTTPException, Form
 from fastapi.responses import HTMLResponse
 from typing import Dict
 from pydantic import BaseModel
+from api import login
 
 app = FastAPI()
+app.include_router(login.router)
 
 locations = {
     "Площа Ринок": "https://example.com/ploscha-rynok.jpg",
