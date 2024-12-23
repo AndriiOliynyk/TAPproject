@@ -3,10 +3,7 @@ from fastapi.responses import HTMLResponse
 from typing import Dict
 from pydantic import BaseModel
 
-from api import login
-
 app = FastAPI()
-app.include_router(login.router)
 
 locations = {
     "Площа Ринок": "https://example.com/ploscha-rynok.jpg",
@@ -22,7 +19,6 @@ rates = {
 class RentalRequest(BaseModel):
     location: str
     duration: int
-
 
 @app.get("/", response_class=HTMLResponse)
 def home():
@@ -60,6 +56,15 @@ def home():
                 height: auto;
                 margin-top: 20px;
             }
+            footer {
+                margin-top: 20px;
+                padding: 10px;
+                background-color: #343a40;
+                color: #f8f9fa;
+                position: fixed;
+                width: 100%;
+                bottom: 0;
+            }
         </style>
     </head>
     <body>
@@ -82,6 +87,12 @@ def home():
             <button type="submit">Орендувати</button>
         </form>
         <img id="locationImage" src="https://example.com/ploscha-rynok.jpg" alt="Локація">
+        <footer>
+            <p>© 2024 Оренда Камери у Львові. Всі права захищено.</p>
+            <p>Адреса: Львів, вул. Шевченка, 1</p>
+            <p>Телефон: +380 98 123 4567</p>
+            <p>Instagram: <a href="https://instagram.com/camera_rental_lviv" target="_blank" style="color: #f8f9fa;">@camera_rental_lviv</a></p>
+        </footer>
         <script>
             const locations = {
                 "Площа Ринок": "https://example.com/ploscha-rynok.jpg",
@@ -114,6 +125,6 @@ def rent_camera(location: str = Form(...), duration: int = Form(...)):
         "location_image": locations[location]
     }
 
-if __name__ == "main":
+if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
