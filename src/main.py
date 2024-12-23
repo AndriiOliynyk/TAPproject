@@ -9,7 +9,7 @@ app.include_router(login.router)
 app.include_router(register.router)
 
 
-
+#
 class RentalRequest(BaseModel):
     location: str
     duration: int
