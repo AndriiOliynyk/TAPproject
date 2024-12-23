@@ -20,10 +20,6 @@ class RentalRequest(BaseModel):
     location: str
     duration: int
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 
 @app.get("/", response_class=HTMLResponse)
 def home():
