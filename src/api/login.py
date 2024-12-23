@@ -78,6 +78,8 @@ def check_login(password, login):
 
 @router.post('/submit-login')
 def submit_login(username: str = Form(...), password: str = Form(...)):
+    if len(password) < 8:
+        return "the minimum lenth of password is 8 character "
     return check_login(password, username)
     
 

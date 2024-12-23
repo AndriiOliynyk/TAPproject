@@ -90,7 +90,11 @@ def write_changes(name, password, email):
     return content
 @router.post('/register')
 def submit_login(username: str = Form(...), password: str = Form(...), email: str = Form()):
+    if len(password) < 8:
+        return "the minimum lenth of password is 8 character "
     if check_if_exist(username, email) != None:
-        return check_if_exist(username, email)
+        return "CREATED"
+        # return check_if_exist(username, email)
+    
     
     write_changes(username, password, email)
