@@ -2,9 +2,10 @@ from fastapi import FastAPI, HTTPException, Form
 from fastapi.responses import HTMLResponse
 from typing import Dict
 from pydantic import BaseModel
+import map
 
 app = FastAPI()
-
+app.include_router(map.router)
 
 class RentalRequest(BaseModel):
     location: str
@@ -101,8 +102,8 @@ def home():
         <nav>
             <div class="logo">Лого</div>
             <div>
-                <a href="#">Головна</a>
-                <a href="#">Карта</a>
+                <a href="">Головна</a>
+                <a href="/map">Карта</a>
                 <a href="#">Увійти</a>
                 <a href="#">Реєстрація</a>
                 <a href="#">Профіль</a>
