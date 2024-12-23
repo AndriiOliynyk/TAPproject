@@ -65,8 +65,11 @@ def check_login(password, login):
     with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "r") as file:
         content = json.load(file)
     try:
+        for user in content["users"]:
+            if content["users"][user]["email"] == login:
+                login = user
         if str(password) != str(content["users"][str(login)]["password"]):
-     
+    
             return "wrong password or login"
         else:
             return "success"
