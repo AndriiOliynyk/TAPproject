@@ -1,9 +1,12 @@
-from fastapi import FastAPI, HTTPException, Form
+from fastapi import FastAPI, HTTPException, Form, APIRouter
 from fastapi.responses import HTMLResponse
 from typing import Dict
 from pydantic import BaseModel
+from api import profile
 
 app = FastAPI()
+
+app.include_router(profile.router)
 
 locations = {
     "Площа Ринок": "https://example.com/ploscha-rynok.jpg",
@@ -113,3 +116,5 @@ def rent_camera(location: str = Form(...), duration: int = Form(...)):
 if __name__ == "main":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
+
