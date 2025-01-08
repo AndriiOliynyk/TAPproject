@@ -82,6 +82,20 @@ def submit_login(username: str = Form(...), password: str = Form(...)):
         return "the minimum lenth of password is 8 character "
     return check_login(password, username)
     
+#фронт треба
+def save_new_password(id, password):
+    with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "r") as file:
+        content = json.load(file)
+    for user in content["users"]:
+        if str(content["users"][user][id]) == str(id):
+            content["users"][user]["password"] = password
+            return "password saved"
 
 
-    
+def does_password_match(old_password, new_password):
+    if len(new_password) < 8:
+        return "new password lenth shorter than 8"
+    if str(old_password) == str(new_password):
+        return "new password should be different than old one"
+    else:
+        return None
