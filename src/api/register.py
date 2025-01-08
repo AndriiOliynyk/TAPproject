@@ -14,7 +14,6 @@ def check_if_exist(name, email):
             for user in content["users"]:
                 if str(content["users"][user]["email"]) == str(email):
                     return "email is already occupied"
-            flag = content["users"][str(name)]
         except KeyError:
             return None
         return "nickname is already occupied"
@@ -109,7 +108,10 @@ def submit_login(username: str = Form(...), password: str = Form(...), email: st
     if len(password) < 8:
         return "the minimum lenth of password is 8 character "
     if check_if_exist(username, email) != None:
+        write_changes(username, password, email)
         return "CREATED"
+    else:
+        return "username or email is already occupied"
         # return check_if_exist(username, email)
     
     
