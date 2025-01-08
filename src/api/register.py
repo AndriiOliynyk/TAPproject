@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Form
 from fastapi.responses import HTMLResponse
 import json
+import random
 
 router = APIRouter(tags=["Create a new account"])
+ID_START = pow(10, 8)
+ID_END = pow(10, 9) - 1
 
 def check_if_exist(name, email):
     with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "r") as file:
@@ -78,12 +81,25 @@ def create_new_account():
 """
     return html_content
 
+def create_id():
+    while True:
+        id = random.randint(ID_START, ID_END)
+        with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "r") as file:
+            content = json.load(file)
+        for user in content["users"]:
+            if content["users"][user]["id"] == id:
+                continue
+            else:
+                return id
+
 def write_changes(name, password, email):
     with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "r") as file:
         content = json.load(file)
+    id = create_id()
     content["users"][name] = {
         "password": password,
-        "email": email
+        "email": email,
+        "id": id
     }
     with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "w") as file:
         json.dump(content, file, indent=3)
