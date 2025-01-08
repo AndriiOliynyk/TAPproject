@@ -2,12 +2,20 @@ from fastapi import FastAPI, HTTPException, Form
 from fastapi.responses import HTMLResponse
 from typing import Dict
 from pydantic import BaseModel
-import api.map as map, api.register as register, api.login as login
+import api.map as map, api.register as register, api.login as login, api.ploshcha as ploshcha, api.camera1 as camera1, api.camera2 as camera2, api.camera3 as camera3, api.camera4 as camera4, api.camera5 as camera5,api.camera6 as camera6, api.profile as profile
 
 app = FastAPI()
 app.include_router(map.router)
 app.include_router(login.router)
 app.include_router(register.router)
+app.include_router(ploshcha.router)
+app.include_router(camera1.router)
+app.include_router(camera2.router)
+app.include_router(camera3.router)
+app.include_router(camera4.router)
+app.include_router(camera5.router)
+app.include_router(camera6.router)
+app.include_router(profile.router)
 
 class RentalRequest(BaseModel):
     location: str
@@ -108,7 +116,7 @@ def home():
                 <a href="/map">Карта</a>
                 <a href="/login">Увійти</a>
                 <a href="/register">Реєстрація</a>
-                <a href="#">Профіль</a>
+                <a href="/profile/{user_id}">Профіль</a>
             </div>
         </nav>
         <h1>Оренда Камери у Львові</h1>
@@ -117,7 +125,7 @@ def home():
         <div class="image-gallery">
             <div>
                 <h3>Площа Ринок</h3>
-                <a href="/location/ploscha-rynok">
+                <a href="/location/ploshcha-rynok">
                 <img src="https://ua.igotoworld.com/frontend/webcontent/images/tours/1035068_800x600_aerophoto_lviv_9.jpg" alt="Площа Ринок" />
                 </a>
             </div>
@@ -146,72 +154,6 @@ def home():
     """
     return html_content
 
-
-@app.get("/location/ploscha-rynok", response_class=HTMLResponse)
-def location_ploscha_rynok():
-    html_content = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Площа Ринок - Оренда Камери</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f8f9fa;
-                color: #343a40;
-            }
-            h1 {
-                margin-top: 20px;
-                text-align: center;
-            }
-            .rental-options {
-                text-align: center;
-                margin-top: 40px;
-            }
-            .rental-options button {
-                padding: 10px 20px;
-                font-size: 16px;
-                background-color: #343a40;
-                color: white;
-                border: none;
-                cursor: pointer;
-                margin: 10px;
-            }
-            .rental-options button:hover {
-                background-color: #007bff;
-            }
-            footer {
-                margin-top: 20px;
-                padding: 10px;
-                background-color: #343a40;
-                color: #f8f9fa;
-                text-align: center;
-                position: fixed;
-                width: 100%;
-                bottom: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Оренда Камери - Площа Ринок</h1>
-        <div class="rental-options">
-            <h3>Доступні опції оренди:</h3>
-            <button onclick="location.href='/rent?location=Площа%20Ринок&duration=10'">10 хв - 25 грн</button>
-            <button onclick="location.href='/rent?location=Площа%20Ринок&duration=15'">15 хв - 35 грн</button>
-            <button onclick="location.href='/rent?location=Площа%20Ринок&duration=20'">20 хв - 40 грн</button>
-        </div>
-        <footer>
-            <p>© 2024 Оренда Камери у Львові. Всі права захищено.</p>
-            <p>Адреса: Львів, вул. Шевченка, 1</p>
-            <p>Телефон: +380 98 123 4567</p>
-            <p>Instagram: <a href="https://instagram.com/camera_rental_lviv" target="_blank" style="color: #f8f9fa;">@camera_rental_lviv</a></p>
-        </footer>
-    </body>
-    </html>
-    """
-    return html_content
 
 
 
