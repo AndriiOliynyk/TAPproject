@@ -3,10 +3,11 @@ from fastapi.responses import HTMLResponse
 import json
 
 router = APIRouter(tags=["Profile Page"])
+PATH = "/home/dmytro/tap_1/TAPproject/src/api/credentials.json"
 
 # Функція для отримання профілю з файлу за ID
 def get_profile_by_id(user_id: str):
-    with open("credentials.json", "r") as file:
+    with open(PATH, "r") as file:
         content = json.load(file)
 
     # ітеруємося по користувачах для пошуку за id
@@ -18,7 +19,7 @@ def get_profile_by_id(user_id: str):
     raise HTTPException(status_code=404, detail="Profile not found")
 
 def get_name():
-    with open("credentials.json", "r") as data:
+    with open(PATH, "r") as data:
         content = json.load(data)
 
     usernames = list(content['users'].keys())

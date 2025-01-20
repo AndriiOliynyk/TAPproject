@@ -1,20 +1,29 @@
 from fastapi import APIRouter, Form
 from fastapi.responses import HTMLResponse
+from fastapi.responses import RedirectResponse
 import json
+import random
+
+PATH = "/home/dmytro/tap_1/TAPproject/src/api/credentials.json"
 
 router = APIRouter(tags=["Create a new account"])
+ID_START = pow(10, 8)
+ID_END = pow(10, 9) - 1
 
 def check_if_exist(name, email):
-    with open("src/credentials.json", "r") as file:
+    with open(PATH, "r") as file:
         content = json.load(file)
+        ll = []
         try:
             for user in content["users"]:
-                if str(content["users"][user]["email"]) == str(email):
-                    return "email is already occupied"
-            flag = content["users"][str(name)]
-        except KeyError:
-            return None
-        return "nickname is already occupied"
+                if (email == content["users"][user]["email"]):
+                    return None
+                if str(user) == (name):
+                    return None
+            return True
+        except Exception as e:
+            return e
+        
 
 
 @router.get("/register", response_class=HTMLResponse)
@@ -78,23 +87,51 @@ def create_new_account():
 """
     return html_content
 
+def create_id():
+    while True:
+        id = random.randint(ID_START, ID_END)
+        with open(PATH, "r") as file:
+            content = json.load(file)
+        for user in content["users"]:
+            if content["users"][user]["id"] == id:
+                continue
+            else:
+                return id
+
 def write_changes(name, password, email):
-    with open("src/credentials.json", "r") as file:
+    with open(PATH, "r") as file:
         content = json.load(file)
+    id = create_id()
     content["users"][name] = {
         "password": password,
-        "email": email
+        "email": email,
+        "id": id
     }
-    with open("src/credentials.json", "w") as file:
+    with open(PATH, "w") as file:
         json.dump(content, file, indent=3)
     return content
+
+def get_id(email):
+    with open(PATH, "r") as file:
+        content = json.load(file)
+    ll = []
+    for user in content["users"]:
+        if content["users"][user]["email"] == email:
+            return content["users"][user]["id"]
+    else:
+        return 404
+
+
+        
 @router.post('/register')
 def submit_login(username: str = Form(...), password: str = Form(...), email: str = Form()):
     if len(password) < 8:
         return "the minimum lenth of password is 8 character "
-    if check_if_exist(username, email) != None:
-        return "CREATED"
-        # return check_if_exist(username, email)
-    
-    
-    write_changes(username, password, email)
+    if check_if_exist(username, email) == True:
+        write_changes(username, password, email)
+        
+        id = get_id(email)
+        return RedirectResponse(url=f"/profile/{id}", status_code=303)
+
+    else:
+        return "username or email is already occupied"
