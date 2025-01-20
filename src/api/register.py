@@ -10,13 +10,17 @@ ID_END = pow(10, 9) - 1
 def check_if_exist(name, email):
     with open("/home/dmytro/tap_1/TAPproject/src/api/credentials.json", "r") as file:
         content = json.load(file)
+        ll = []
         try:
             for user in content["users"]:
-                if str(content["users"][user]["email"]) == str(email):
-                    return "email is already occupied"
-        except KeyError:
-            return None
-        return "nickname is already occupied"
+                if (email == content["users"][user]["email"]):
+                    return None
+                if str(user) == (name):
+                    return None
+            return True
+        except Exception as e:
+            return e
+        
 
 
 @router.get("/register", response_class=HTMLResponse)
@@ -107,12 +111,10 @@ def write_changes(name, password, email):
 def submit_login(username: str = Form(...), password: str = Form(...), email: str = Form()):
     if len(password) < 8:
         return "the minimum lenth of password is 8 character "
-    if check_if_exist(username, email) != None:
+    if check_if_exist(username, email) == True:
         write_changes(username, password, email)
+        
         return "CREATED"
     else:
         return "username or email is already occupied"
-        # return check_if_exist(username, email)
     
-    
-    write_changes(username, password, email)
