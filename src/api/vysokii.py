@@ -3,13 +3,13 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 router=APIRouter()
-@router.get("/location/ploshcha-rynok", response_class=HTMLResponse)
+@router.get("/location/vysokyi-zamok", response_class=HTMLResponse)
 def location_ploscha_rynok():
     html_content = """
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Площа Ринок - Оренда Камери</title>
+        <title>Високий замок - Оренда Камери </title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -105,7 +105,7 @@ def location_ploscha_rynok():
                 <a href="/profile/{user_id}">Профіль</a>
             </div>
         </nav>
-        <h1>Оренда Камери - Площа Ринок</h1>
+        <h1>Оренда Камери - Високий замок</h1>
         <div class="camera-gallery">
             <div>
                 <img src="https://i.moyo.ua/img/gallery/5373/2/1628542_middle.jpg" alt="Камера 1">

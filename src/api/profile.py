@@ -3,10 +3,11 @@ from fastapi.responses import HTMLResponse
 import json
 
 router = APIRouter(tags=["Profile Page"])
+PATH = "/home/taras/Desktop/tap/tap1/demo-peremoga/TAPproject/src/credentials.json"
 
 # Функція для отримання профілю з файлу за ID
 def get_profile_by_id(user_id: str):
-    with open("credentials.json", "r") as file:
+    with open(PATH, "r") as file:
         content = json.load(file)
 
     # ітеруємося по користувачах для пошуку за id
@@ -18,7 +19,7 @@ def get_profile_by_id(user_id: str):
     raise HTTPException(status_code=404, detail="Profile not found")
 
 def get_name():
-    with open("credentials.json", "r") as data:
+    with open(PATH, "r") as data:
         content = json.load(data)
 
     usernames = list(content['users'].keys())
@@ -43,137 +44,133 @@ def profile_page(user_id: str):
                 align-items: center;
                 height: 100vh;
                 margin: 0;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #121212;
-                color: #e0e0e0;
+                font-family: Arial, sans-serif;
+                background-color: #828282;
             }}
-            .container {{
-                background-color: #1e1e1e;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-                padding: 30px;
-                width: 400px;
+            .main-container {{
+                display: flex;
+                width: 90%;
+                max-width: 1400px;
+                height: 600px;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+                background-color: #ffffff;
+            }}
+            .left-section {{
+                flex: 1;
+                background: url('https://img.freepik.com/free-photo/world-photography-day-celebrated-by-middle-aged-man-taking-photos-with-camera-device_23-2151672442.jpg') no-repeat center center;
+                background-size: cover;
+            }}
+            .right-section {{
+                flex: 1;
+                padding: 60px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
                 text-align: center;
             }}
-            .container h1 {{
+            .right-section h1 {{
+                font-size: 32px;
+                color: #333;
+                margin-bottom: 30px;
+            }}
+            .form-group {{
                 margin-bottom: 20px;
-                font-size: 24px;
-                color: #bb86fc;
-            }}
-            .field {{
-                margin: 15px 0;
-                text-align: left;
-            }}
-            .field label {{
-                display: block;
-                font-weight: bold;
-                margin-bottom: 5px;
-                color: #e0e0e0;
-            }}
-            .field input {{
-                width: calc(100% - 12px);
-                padding: 10px;
-                border: 1px solid #333;
-                border-radius: 8px;
-                background-color: #2c2c2c;
-                color: #e0e0e0;
-                outline: none;
-            }}
-            .field input:focus {{
-                border-color: #bb86fc;
-            }}
-            .profile-options {{
-                margin: 20px 0;
-            }}
-            .profile-options button {{
-                background-color: #bb86fc;
-                color: #121212;
-                border: none;
-                border-radius: 8px;
-                padding: 10px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                margin: 5px;
-            }}
-            .profile-options button:hover {{
-                background-color: #9a68df;
-            }}
-            .payment-buttons {{
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
+            }}
+            label {{
+                font-size: 18px;
+                color: #555;
+                display: block;
+                font-weight: bold;
+            }}
+            .value {{
+                font-size: 18px;
+                color: #333;
+            }}
+            .button-group {{
+                display: flex;
+                justify-content: center;
+                gap: 10px;
                 margin-top: 10px;
             }}
-            .payment-buttons button {{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #333;
-                color: #e0e0e0;
-                border: 1px solid #555;
-                border-radius: 8px;
-                padding: 10px;
-                font-size: 14px;
+            button {{
+                background-color: #828282;
+                color: #fff;
+                font-size: 18px;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 5px;
                 cursor: pointer;
-                flex: 1;
-                margin: 5px;
+                transition: background-color 0.3s ease;
             }}
-            .payment-buttons button img {{
-                height: 20px;
-                margin-right: 8px;
+            button:hover {{
+                background-color: #004225;
             }}
-            .payment-buttons button:hover {{
-                background-color: #444;
-                border-color: #bb86fc;
+            button.active {{
+                background-color: #004225;
+            }}
+            .photo-section {{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+            }}
+            .photo-buttons {{
+                display: flex;
+                gap: 10px;
+            }}
+            .photo-buttons button {{
+                margin-left: 10px;
             }}
         </style>
     </head>
     <body>
-    <div class="container">
-            <h1>Welcome, {username}!</h1>
-            <div class="profile-options">
-                <button onclick="changePhoto()">Change Photo</button>
-                <button onclick="deletePhoto()">Delete Photo</button>
-            </div>
-            <h3>Your Information</h3>
-            <div class="field">
-                <label for="email">Email:</label>
-                <input type="email" id="email" value="{profile['email']}" readonly>
-            </div>
-            <div class="field">
-                <label for="password">Password:</label>
-                <input type="password" id="password" value="{profile['password']}" readonly>
-            </div>
-            <div class="field">
-                <label for="favorite-place">Favorite Place:</label>
-                <input type="text" id="favorite-place" placeholder="Enter your favorite place">
-            </div>
-            <div class="field">
-                <label>Payment Method:</label>
-                <div class="payment-buttons">
-                    <button onclick="setupGooglePay()">
-                        <img src="" alt="Google Pay"> Google Pay
-                    </button>
-                    <button onclick="setupApplePay()">
-                        <img src="https://questfcu.com/wp-content/uploads/Apple_Pay_logo.png" alt="Apple Pay"> Apple Pay
-                    </button>
+        <div class="main-container">
+            <div class="left-section"></div>
+            <div class="right-section">
+                <h1>Profile page, {username}!</h1>
+                <div class="form-group">
+                    <label for="email">Your Email:</label>
+                    <span class="value">{profile['email']}</span>
+                </div>
+                <div class="form-group">
+                    <label for="favorite-place">Favorite Place:</label>
+                    <div class="button-group">
+                        <button id="place1" onclick="toggleActive('place1')">Оперний театр</button>
+                        <button id="place2" onclick="toggleActive('place2')">Площа Ринок</button>
+                        <button id="place3" onclick="toggleActive('place3')">Високий замок</button>
+                    </div>
+                </div>
+                <!-- Your Photo section -->
+                <div class="photo-section">
+                    <label>Your Photo:</label>
+                    <div class="photo-buttons">
+    <button onclick="changePhoto()">Change Photo</button>
+                        <button onclick="deletePhoto()">Delete Photo</button>
+                    </div>
                 </div>
             </div>
         </div>
+
         <script>
+            function toggleActive(buttonId) {{
+                const buttons = document.querySelectorAll('.button-group button');
+                buttons.forEach(button => button.classList.remove('active'));
+                document.getElementById(buttonId).classList.add('active');
+            }}
+
             function changePhoto() {{
                 alert("Change photo clicked!");
             }}
+
             function deletePhoto() {{
                 alert("Delete photo clicked!");
             }}
-            function setupGooglePay() {{
-                alert("Google Pay setup clicked!");
-            }}
-            function setupApplePay() {{
-                alert("Apple Pay setup clicked!");
-            }}
         </script>
     </body>
-    </html>
-    """
+    </html>"""
     return HTMLResponse(content=html_content)

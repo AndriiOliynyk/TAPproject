@@ -177,7 +177,9 @@ Optics: Extra-low Dispersion (ED) and Aspherical elements for reduced aberration
                 <button class="price-button" onclick="selectPrice(this, {prices['20 хв']})">20 хв - {prices['20 хв']} грн</button>
             </div>
             <div class="button-container">
+                <a href="/payment">
                 <button class="rental-btn" id="rental-btn">Забронювати</button>
+                </a>
             </div>
         </div>
     </body>

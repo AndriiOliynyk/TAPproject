@@ -1,14 +1,18 @@
-from fastapi import FastAPI, HTTPException, Form
+from fastapi import FastAPI, HTTPException, Form, APIRouter
 from fastapi.responses import HTMLResponse
 from typing import Dict
 from pydantic import BaseModel
-import api.map as map, api.register as register, api.login as login, api.ploshcha as ploshcha, api.camera1 as camera1, api.camera2 as camera2, api.camera3 as camera3, api.camera4 as camera4, api.camera5 as camera5,api.camera6 as camera6, api.profile as profile
+import api.map as map, api.register as register, api.login as login, api.ploshcha as ploshcha, api.camera1 as camera1, api.camera2 as camera2, api.camera3 as camera3, api.camera4 as camera4, api.camera5 as camera5,api.camera6 as camera6, api.profile as profile, api.opernyi as opernyi, api.vysokii as vysokii, api.payment as payment
+
+
 
 app = FastAPI()
 app.include_router(map.router)
 app.include_router(login.router)
 app.include_router(register.router)
 app.include_router(ploshcha.router)
+app.include_router(vysokii.router)
+app.include_router(opernyi.router)
 app.include_router(camera1.router)
 app.include_router(camera2.router)
 app.include_router(camera3.router)
@@ -16,7 +20,7 @@ app.include_router(camera4.router)
 app.include_router(camera5.router)
 app.include_router(camera6.router)
 app.include_router(profile.router)
-
+app.include_router(payment.router)
 class RentalRequest(BaseModel):
     location: str
     duration: int
@@ -110,7 +114,7 @@ def home():
     </head>
     <body>
         <nav>
-            <div class="logo">Лого</div>
+            <div class="logo">TAP</div>
             <div>
                 <a href="">Головна</a>
                 <a href="/map">Карта</a>
